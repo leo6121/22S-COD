@@ -292,7 +292,7 @@ task Test;
 	else
 		begin
 			$display("FAILED");
-			$display("A = %0b, B = %0b, Cin = %0b, C = %0b (Ans : %0b), Cout = %0b (Ans : %0b)", A_, B_, Cin_, C, C_expected, Cout, Cout_expected);
+			$display("A = %b, B = %b, Cin = %b, C = %b (Ans : %b), Cout = %b (Ans : %b)", A_, B_, Cin_, C, C_expected, Cout, Cout_expected);
 			Failed = Failed + 1;
 		end
     end

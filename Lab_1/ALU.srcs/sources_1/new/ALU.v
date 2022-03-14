@@ -1,22 +1,22 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company:
+// Engineer:
+//
 // Create Date: 2022/03/08 11:44:45
-// Design Name: 
+// Design Name:
 // Module Name: ALU
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
+// Project Name:
+// Target Devices:
+// Tool Versions:
+// Description:
+//
+// Dependencies:
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 // Arithmetic
 `define	OP_ADD	4'b0000
@@ -38,43 +38,65 @@
 `define	OP_ALS	4'b1110
 `define	OP_RL	4'b1111
 
-module ALU(
-    input [15:0] A,
-    input [15:0] B,
-    input Cin,
-    input [3:0] OP,
-    output Cout,
-    output [15:0] C
-    );
-    reg Cout;
-    reg [15:0] C;
+module ALU (OP, A, B, Cin, C, Cout);
+    input [3:0] OP;
+    input [15:0] A;
+    input [15:0] B;
+    input Cin;
+    output reg [15:0] C;
+    output reg Cout;
+
+    // wire [16:0] add, sub;
+
+    // assign add = A + B + Cin;
+    // assign sub = A - B - Cin;
+
+    // assign C = (OP == `OP_ADD) ? add[15:0] : 
+    //            (OP == `OP_SUB) ? sub[15:0] :
+    //            (OP == `OP_ID) ? A :
+    //            (OP == `OP_NAND) ? ~(A & B) :
+    //            (OP == `OP_NOR) ? ~(A | B) :
+    //            (OP == `OP_XNOR) ? ~(A ^ B) :
+    //            (OP == `OP_NOT) ? ~A :
+    //            (OP == `OP_AND) ? A & B :
+    //            (OP == `OP_OR) ? A | B :
+    //            (OP == `OP_XOR) ? A ^ B :
+    //            (OP == `OP_LRS) ? A >> 1 :
+    //            (OP == `OP_ARS) ? $signed(A) >>> 1 :
+    //            (OP == `OP_RR) ? {A[0], A[15:1]} :
+    //            (OP == `OP_LLS) ? A << 1 :
+    //            (OP == `OP_ALS) ? $signed(A) <<< 1 : {A[14:0], A[15]};
+
+    // assign Cout = (OP == `OP_ADD) ? add[16] :
+    //               (OP == `OP_SUB) ? sub[16] : 1'b0;
+
     always @(A, B, Cin, OP) begin
         case (OP)
             `OP_ADD : begin
                     {Cout,C} = A+B+Cin;
-                end             
+            end
             `OP_SUB : begin
-                    {Cout,C} = A-B-Cin;
-                end
+                  {Cout,C} = A-B-Cin;
+            end
             `OP_ID : begin
-                   Cout = 0;
-                   C = A;                   
-                   end                
+                    Cout = 0;
+                    C = A;
+               end
             `OP_NAND : begin
                     Cout = 0;
-                    C = ~ (A & B);
-                    end
+                    C = ~(A & B);
+                end
             `OP_NOR : begin
                     Cout = 0;
-                    C = ~ (A | B);
-                    end
+                    C = ~(A | B);
+                end
             `OP_XNOR : begin
                     Cout = 0;
-                    C = ~ (A ^ B);
+                    C = ~(A ^ B);
                 end
             `OP_NOT : begin
                     Cout = 0;
-                    C = ~ A;
+                    C = ~A;
                 end
             `OP_AND : begin
                     Cout = 0;
@@ -98,7 +120,7 @@ module ALU(
                 end
             `OP_RR : begin
                     Cout = 0;
-                    C = (A << 15) | (A >> 1);
+                    C = {A[0], A[15:1]};
                 end
             `OP_LLS : begin
                     Cout = 0;
@@ -106,14 +128,12 @@ module ALU(
                 end
             `OP_ALS : begin
                     Cout = 0;
-                    C = A <<< 1;
+                    C = $signed(A) <<< 1;
                 end
             `OP_RL : begin
                     Cout = 0;
-                    C = (A << 1) | (A >> 15);
-                end 
+                    C = {A[14:0], A[15]};
+                end
         endcase
     end
-    
-    
 endmodule

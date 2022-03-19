@@ -37,10 +37,10 @@ module RF(clk, reset_n, write, addr1, addr2, addr3, data3, data1, data2);
     
     always @(posedge clk or negedge reset_n) begin
         if (!reset_n) begin
-            data[0] = 16'h0000;
-            data[1] = 16'h0000;
-            data[2] = 16'h0000;
-            data[3] = 16'h0000;
+            data[0] <= 16'h0000;
+            data[1] <= 16'h0000;
+            data[2] <= 16'h0000;
+            data[3] <= 16'h0000;
         end  
             
         if(write) begin

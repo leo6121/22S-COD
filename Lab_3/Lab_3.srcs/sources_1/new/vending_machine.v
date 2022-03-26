@@ -92,119 +92,81 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
         else begin
             if(!i_trigger_return) begin
                 o_return_coin <= 0;
-
-                if(i_input_coin != 3'b000) begin//input
+                o_output_item <= i_select_item & o_available_item;
+                if(i_input_coin) begin//input
                     o_current_total <= o_current_total + inputtotal;
-                    o_output_item <= 4'b0000;
-                    o_available_item = (current_total + inputtotal >= 2000) ? 4'b1111 :
-                                     (current_total + inputtotal >= 1000) ? 4'b0111 :
-                                     (current_total + inputtotal >= 500) ? 4'b0011 :
-                                     (current_total + inputtotal >= 400) ? 4'b0001 : 4'b0000;
-                    if (i_input_coin[0]) begin//input 100
-                        if (!num_coins[1] & num_coins[0] == 4) begin//100-500
-                            num_coins[0] <= num_coins[0] - 4;
-                            num_coins[1] <= num_coins[1] + 1;
-                            num_coins[2] <= num_coins[2];
-                        end
-                        else if (num_coins[1] & num_coins[0] == 4) begin//100-1000
-                            num_coins[0] <= num_coins[0] - 4;
-                            num_coins[1] <= num_coins[1] - 1;
-                            num_coins[2] <= num_coins[2] + 1;
-                        end
-                        else begin
-                            num_coins[0] <= num_coins[0] + 1;
-                            num_coins[1] <= num_coins[1];
-                            num_coins[2] <= num_coins[2];
-                        end
-                    end
-                    else if (i_input_coin[1]) begin//input 500
-                        if (num_coins[1]) begin//500-1000
-                            num_coins[0] <= num_coins[0];
-                            num_coins[1] <= num_coins[1] - 1;
-                            num_coins[2] <= num_coins[2] + 1;
-                        end
-                        else begin
-                            num_coins[0] <= num_coins[0];
-                            num_coins[1] <= num_coins[1] + 1;
-                            num_coins[2] <= num_coins[2];
-                        end
-                    end
-                    else if (i_input_coin[2]) begin//input 1000
-                        num_coins[0] <= num_coins[0];
-                        num_coins[1] <= num_coins[1];
-                        num_coins[2] <= num_coins[2] + 1;
-                    end
-                    else begin
-                        num_coins[0] <= num_coins[0];
-                        num_coins[1] <= num_coins[1];
-                        num_coins[2] <= num_coins[2];
-                    end
-                end
-                else if (i_select_item !=4'b0000) begin//select
-                    if (current_total >= selecttotal) begin
-                        o_current_total <= o_current_total - selecttotal;
-                        o_output_item <= i_select_item;
-                        o_available_item = (current_total - selecttotal >= 2000) ? 4'b1111 :
-                                         (current_total - selecttotal >= 1000) ? 4'b0111 :
-                                         (current_total - selecttotal >= 500) ? 4'b0011 :
-                                         (current_total - selecttotal >= 400) ? 4'b0001 : 4'b0000;
-                        if (i_select_item[0]) begin//select 400
-                            if (num_coins[0] == 4) begin
+                    o_available_item = (current_total + inputtotal >= kkItemPrice[3]) ? 4'b1111 :
+                                     (current_total + inputtotal >= kkItemPrice[2]) ? 4'b0111 :
+                                     (current_total + inputtotal >= kkItemPrice[1]) ? 4'b0011 :
+                                     (current_total + inputtotal >= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
+                    case (i_input_coin)
+                        3'b001:
+                            if (!num_coins[1] & num_coins[0] == 4) begin//100-500
                                 num_coins[0] <= num_coins[0] - 4;
-                                num_coins[1] <= num_coins[1];
-                                num_coins[2] <= num_coins[2];
+                                num_coins[1] <= num_coins[1] + 1;
+                            end
+                            else if (num_coins[1] & num_coins[0] == 4) begin//100-1000
+                                num_coins[0] <= num_coins[0] - 4;
+                                num_coins[1] <= num_coins[1] - 1;
+                                num_coins[2] <= num_coins[2] + 1;
                             end
                             else begin
-                                if(num_coins[1]) begin//100-500
-                                    num_coins[0] <= num_coins[0] + 1;
-                                    num_coins[1] <= num_coins[1] - 1;
-                                    num_coins[2] <= num_coins[2];
+                                num_coins[0] <= num_coins[0] + 1;
+                            end
+                        3'b010:
+                            if (num_coins[1]) begin//500-1000
+                                num_coins[1] <= num_coins[1] - 1;
+                                num_coins[2] <= num_coins[2] + 1;
+                            end
+                            else begin
+                                num_coins[1] <= num_coins[1] + 1;
+                            end
+                        3'b100:
+                            num_coins[2] <= num_coins[2] + 1;
+                    endcase
+                end
+                else if (i_select_item) begin//select
+                    if (current_total >= selecttotal) begin
+                        o_current_total <= o_current_total - selecttotal;
+                        o_available_item = (current_total - selecttotal >= kkItemPrice[3]) ? 4'b1111 :
+                                         (current_total - selecttotal >= kkItemPrice[2]) ? 4'b0111 :
+                                         (current_total - selecttotal >= kkItemPrice[1]) ? 4'b0011 :
+                                         (current_total - selecttotal >= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
+                        case (i_select_item)
+                            4'b0001:
+                                if (num_coins[0] == 4) begin
+                                    num_coins[0] <= num_coins[0] - 4;
                                 end
-                                else begin //500-1000
-                                    num_coins[0] <= num_coins[0] + 1;
+                                else begin
+                                    if(num_coins[1]) begin//100-500
+                                        num_coins[0] <= num_coins[0] + 1;
+                                        num_coins[1] <= num_coins[1] - 1;
+                                    end
+                                    else begin //500-1000
+                                        num_coins[0] <= num_coins[0] + 1;
+                                        num_coins[1] <= num_coins[1] + 1;
+                                        num_coins[2] <= num_coins[2] - 1;
+                                    end
+                                end
+                            4'b0010:
+                                if (!num_coins[1]) begin//500-1000
                                     num_coins[1] <= num_coins[1] + 1;
                                     num_coins[2] <= num_coins[2] - 1;
                                 end
-                            end
-                        end
-                        else if (i_select_item[1]) begin//select 500
-                            if (!num_coins[1]) begin//500-1000
-                                num_coins[0] <= num_coins[0];
-                                num_coins[1] <= num_coins[1] + 1;
+                                else begin
+                                    num_coins[1] <= num_coins[1] - 1;
+                                end
+                            4'b0100:
                                 num_coins[2] <= num_coins[2] - 1;
-                            end
-                            else begin
-                                num_coins[0] <= num_coins[0];
-                                num_coins[1] <= num_coins[1] - 1;
-                                num_coins[2] <= num_coins[2];
-                            end
-                        end
-                        else if (i_select_item[2]) begin//select 1000
-                            num_coins[0] <= num_coins[0];
-                            num_coins[1] <= num_coins[1];
-                            num_coins[2] <= num_coins[2] - 1;
-                        end
-                        else if (i_select_item[3]) begin//select 2000
-                            num_coins[0] <= num_coins[0];
-                            num_coins[1] <= num_coins[1];
-                            num_coins[2] <= num_coins[2] - 2;
-                        end
-                        else begin
-                            num_coins[0] <= num_coins[0];
-                            num_coins[1] <= num_coins[1];
-                            num_coins[2] <= num_coins[2];
-                        end
+                            4'b1000:
+                                num_coins[2] <= num_coins[2] - 2;
+                        endcase
                     end
                     else begin
-                        o_current_total <= o_current_total;
-                        o_output_item <= 4'b0000;
-                        num_coins[0] <= num_coins[0];
-                        num_coins[1] <= num_coins[1];
-                        num_coins[2] <= num_coins[2];
-                        o_available_item = (current_total >= 2000) ? 4'b1111 :
-                                         (current_total>= 1000) ? 4'b0111 :
-                                         (current_total>= 500) ? 4'b0011 :
-                                         (current_total>= 400) ? 4'b0001 : 4'b0000;
+                        o_available_item = (current_total >= kkItemPrice[3]) ? 4'b1111 :
+                                         (current_total>= kkItemPrice[2]) ? 4'b0111 :
+                                         (current_total>= kkItemPrice[1]) ? 4'b0011 :
+                                         (current_total>= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
                     end
                 end
             end
@@ -215,6 +177,5 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
                 o_return_coin <= num_coins[2]+num_coins[1]+num_coins[0];
             end
         end
-        // TODO: update all states.
     end
 endmodule

@@ -63,7 +63,6 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
     assign kkCoinValue[2] = 1000;
 
     // Internal states. You may add your own reg variables.
-    wire [`kTotalBits-1:0] current_total;
     wire [31:0] inputtotal, selecttotal;
     reg [`kItemBits-1:0] num_items [`kNumItems-1:0]; //use if needed
     reg [`kCoinBits-1:0] num_coins [`kNumCoins-1:0]; //use if needed
@@ -75,7 +74,6 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
 
     assign inputtotal = i_input_coin[0]*kkCoinValue[0] + i_input_coin[1]*kkCoinValue[1] + i_input_coin[2]*kkCoinValue[2];
     assign selecttotal = i_select_item[0]*kkItemPrice[0] + i_select_item[1]*kkItemPrice[1] + i_select_item[2]*kkItemPrice[2] + i_select_item[3]*kkItemPrice[3];
-    assign current_total = num_coins[0]*kkCoinValue[0] + num_coins[1]*kkCoinValue[1] + num_coins[2]*kkCoinValue[2];
 
     // Sequential circuit to reset or update the states
     always @(posedge clk) begin
@@ -95,10 +93,10 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
                 o_output_item <= i_select_item & o_available_item;
                 if(i_input_coin) begin//input
                     o_current_total <= o_current_total + inputtotal;
-                    o_available_item = (current_total + inputtotal >= kkItemPrice[3]) ? 4'b1111 :
-                                     (current_total + inputtotal >= kkItemPrice[2]) ? 4'b0111 :
-                                     (current_total + inputtotal >= kkItemPrice[1]) ? 4'b0011 :
-                                     (current_total + inputtotal >= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
+                    o_available_item = (o_current_total + inputtotal >= kkItemPrice[3]) ? 4'b1111 :
+                                     (o_current_total + inputtotal >= kkItemPrice[2]) ? 4'b0111 :
+                                     (o_current_total + inputtotal >= kkItemPrice[1]) ? 4'b0011 :
+                                     (o_current_total + inputtotal >= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
                     case (i_input_coin)
                         3'b001:
                             if (!num_coins[1] & num_coins[0] == 4) begin//100-500
@@ -126,12 +124,12 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
                     endcase
                 end
                 else if (i_select_item) begin//select
-                    if (current_total >= selecttotal) begin
+                    if (o_current_total >= selecttotal) begin
                         o_current_total <= o_current_total - selecttotal;
-                        o_available_item = (current_total - selecttotal >= kkItemPrice[3]) ? 4'b1111 :
-                                         (current_total - selecttotal >= kkItemPrice[2]) ? 4'b0111 :
-                                         (current_total - selecttotal >= kkItemPrice[1]) ? 4'b0011 :
-                                         (current_total - selecttotal >= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
+                        o_available_item = (o_current_total - selecttotal >= kkItemPrice[3]) ? 4'b1111 :
+                                         (o_current_total - selecttotal >= kkItemPrice[2]) ? 4'b0111 :
+                                         (o_current_total - selecttotal >= kkItemPrice[1]) ? 4'b0011 :
+                                         (o_current_total - selecttotal >= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
                         case (i_select_item)
                             4'b0001:
                                 if (num_coins[0] == 4) begin
@@ -163,10 +161,11 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
                         endcase
                     end
                     else begin
-                        o_available_item = (current_total >= kkItemPrice[3]) ? 4'b1111 :
-                                         (current_total>= kkItemPrice[2]) ? 4'b0111 :
-                                         (current_total>= kkItemPrice[1]) ? 4'b0011 :
-                                         (current_total>= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
+                        o_output_item <= 4'b0000;
+                        o_available_item = (o_current_total >= kkItemPrice[3]) ? 4'b1111 :
+                                         (o_current_total>= kkItemPrice[2]) ? 4'b0111 :
+                                         (o_current_total>= kkItemPrice[1]) ? 4'b0011 :
+                                         (o_current_total>= kkItemPrice[0]) ? 4'b0001 : 4'b0000;
                     end
                 end
             end

@@ -174,6 +174,9 @@ module vending_machine (clk, reset_n, i_input_coin, i_select_item, i_trigger_ret
                 o_output_item <= 4'b0000;
                 o_available_item <= 4'b0000;
                 o_return_coin <= num_coins[2]+num_coins[1]+num_coins[0];
+                num_coins[0] <= 0;
+                num_coins[1] <= 0;
+                num_coins[2] <= 0;
             end
         end
     end

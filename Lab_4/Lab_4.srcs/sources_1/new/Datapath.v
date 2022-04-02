@@ -1,4 +1,3 @@
-`timescale 1ns / 100ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company:
 // Engineer:
@@ -21,50 +20,83 @@
 `define WORD_SIZE 16    // data and address word size
 
 
-module Datapath(instruction, clk, reset_n, write, readdata1, fin);
-    input [15:0] instruction;
+module Datapath(data, clk, reset_n, inputReady, regdst, jump, aluop, alusrc, regwrite, wwd, readM, instruction, output_port, pc);
+    input [15:0] data;
     input clk;
     input reset_n;
-    input write;
-    output [15:0] readdata1;
-    output reg fin; // Alu calculation finish
+    input inputReady;
+    input regdst;
+    input jump;
+    input [3:0] aluop;
+    input [1:0] alusrc;
+    input regwrite;
+    input wwd;
+    output reg readM;
+    output reg [15:0] instruction;
+    output reg [15:0] output_port;
+    output reg [15:0] pc;
 
-    wire [3:0] op;
-    wire [15:0] aluresult, aluinput1, aluinput2, data1, data2, data3;
-    wire cin, cout, write_enable;
-    wire [1:0] addr1, addr2, addr3;
-    reg alufin, rffin;
 
-    ALU alu(
-            .OP(op),
-            .A(aluresult),
-            .B(aluinput1),
-            .Cin(cin),
-            .C(aluinput2),
-            .Cout(cout)
-        );
+    wire [15:0] regdata1, regdata2, writedata;
+    wire [1:0] rs, rd, rt, writeregaddr;
+
+    assign rs = instruction[11:10];
+    assign rd = instruction[9:8];
+    assign rt = instruction[7:6];
+    assign writeregaddr = (regdst) ? rd : rt;
 
     RF rf(
            .clk(clk),
            .reset_n(reset_n),
-           .write(write_enable),
-           .addr1(addr1),
-           .addr2(addr2),
-           .addr3(addr3),
-           .data3(data3),
-           .data1(data1),
-           .data2(data2)
+           .write(regwrite),
+           .addr1(rs),
+           .addr2(rd),
+           .addr3(writeregaddr),
+           .data3(writedata),
+           .data1(regdata1),
+           .data2(regdata2)
        );
 
-    assign op = instruction[15:12];
-    assign addr1 = instruction[11:10];
-    assign addr2 = instruction[9:8];
-    assign addr3 = instruction[7:6];
-    assign aluinput1 = data1;
-    assign aluinput2 = data2;
-    assign data3 = aluresult;
-    assign write_enable = write;
+    wire cout;
+    wire [15:0] aluinput1, aluinput2;
+    assign aluinput1 = regdata1;
+    assign aluinput2 = (alusrc == 2'd1) ? {{8{instruction[7]}}, instruction[7:0]} :
+           (alusrc == 2'd2) ? {instruction[7:0], 8'b0} : regdata2;
 
-    assign readdata1 = data1;
+    ALU alu(
+            .OP(aluop),
+            .A(aluinput1),
+            .B(aluinput2),
+            .Cin(1'b0),
+            .C(writedata),
+            .Cout(cout)
+        );
 
+    //instruction fetch
+    always @(posedge clk or negedge reset_n or posedge inputReady) begin
+        if(!reset_n) begin
+            instruction <= `WORD_SIZE'b0;
+            readM <= 1'b0;
+        end
+        else if(inputReady) begin
+            instruction <= data;
+            readM <= 1'b0;
+        end
+        else begin
+            instruction <= `WORD_SIZE'b0;
+            readM <= 1'b1;
+        end
+
+    end
+
+    always @(posedge clk or negedge reset_n) begin
+        if(!reset_n) begin
+            pc <= 0;
+            output_port <= 0;
+        end
+        else begin
+            pc <= (jump) ? {pc[15:12], instruction[11:0]} : pc+1;
+            output_port <= (wwd) ? regdata1 : 0;
+        end
+    end
 endmodule

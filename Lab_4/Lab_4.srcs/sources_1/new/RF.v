@@ -1,4 +1,3 @@
-`timescale 100ps / 100ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company:
 // Engineer:
@@ -33,11 +32,6 @@ module RF(clk, reset_n, write, addr1, addr2, addr3, data3, data1, data2);
     always @(*) begin
         data1 = data[addr1];
         data2 = data[addr2];
-
-        if(write) begin
-            data[addr3] = data3;
-        end
-
     end
 
     always @(posedge clk or negedge reset_n) begin
@@ -46,6 +40,9 @@ module RF(clk, reset_n, write, addr1, addr2, addr3, data3, data1, data2);
             data[1] <= 16'h0000;
             data[2] <= 16'h0000;
             data[3] <= 16'h0000;
+        end
+        else if(write) begin
+            data[addr3] = data3;
         end
     end
 endmodule

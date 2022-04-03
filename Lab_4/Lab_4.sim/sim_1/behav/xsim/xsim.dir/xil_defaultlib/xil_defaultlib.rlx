@@ -6,7 +6,7 @@ C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.sim/sim_1/behav/xsim/glbl.v,1648499928
 C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sim_1/new/tb_cpu.v,1648912491,verilog,,,,tb_cpu,,,,,,,,
 C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/ALU.v,1648916506,verilog,,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/Control.v,,ALU,,,,,,,,
 C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/Control.v,1648916509,verilog,,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/Datapath.v,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/opcodes.v;C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/ALU.v,Control,,,,,,,,
-C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/Datapath.v,1648915454,verilog,,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/RF.v,,Datapath,,,,,,,,
+C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/Datapath.v,1648916512,verilog,,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/RF.v,,Datapath,,,,,,,,
 C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/RF.v,1648913389,verilog,,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/cpu.v,,RF,,,,,,,,
 C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/cpu.v,1648913912,verilog,,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sim_1/new/tb_cpu.v,C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/opcodes.v,cpu,,,,,,,,
 C:/Users/user/Desktop/22S-COD/Lab_4/Lab_4.srcs/sources_1/new/opcodes.v,1648916508,verilog,,,,opcodes,,,,,,,,

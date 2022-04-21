@@ -1,0 +1,14 @@
+0.7
+2020.2
+Nov 18 2020
+09:47:47
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.sim/sim_1/behav/xsim/glbl.v,1605673889,verilog,,,,glbl,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/ALU.v,1649834983,verilog,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/Control.v,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/opcodes.v,ALU,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/Control.v,1649776281,verilog,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/Datapath.v,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/opcodes.v;C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/constants.v,Control,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/Datapath.v,1649779466,verilog,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/RF.v,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/opcodes.v;C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/constants.v,Datapath,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/RF.v,1649236252,verilog,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/cpu.v,,RF,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/constants.v,1649685996,verilog,,,,,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/cpu.v,1649686879,verilog,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/memory.v,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/opcodes.v;C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/constants.v,cpu,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/cpu_tb.v,1649686814,verilog,,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/constants.v,cpu_tb,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/memory.v,1649685680,verilog,,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/cpu_tb.v,C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/constants.v,memory,,,,,,,,
+C:/Users/yunse/Desktop/22S-COD-main/Lab_5/Lab_5.srcs/sources_1/new/opcodes.v,1649692799,verilog,,,,,,,,,,,,

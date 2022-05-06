@@ -59,24 +59,20 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
     wire [15:0] writedata;
 
     wire [15:0] predicted_pc;
-    wire [`MEMORY_SIZE-1:0] Vaild;
 
     Branch_predictor branch_predictor(
         .clk(clk),
         .reset_n(reset_n),
         .pc(pc),
-        .ifid_nextpc(ifid_nextpc),
         .mem_signal(mem_signal),
         .wb_signal(wb_signal),
         .exmem_nextpc(exmem_nextpc),
         .exmem_targetaddr(exmem_targetaddr),
         .exmem_mem_signal(exmem_mem_signal),
-        .predicted_pc(predicted_pc),
-        .Vaild(Vaild)
-    );
+        .predicted_pc(predicted_pc)
+        );
 
     Hazard hazard(
-        .Vaild(Vaild),
         .pc(pc),
         .ifid_instruction(ifid_instruction),
         .idex_instruction(idex_instruction),

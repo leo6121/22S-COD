@@ -1,5 +1,4 @@
-module Hazard (Vaild, pc, ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signal, idex_wb_signal, exmem_branchcond, exmem_mem_signal, exmem_wb_signal, exmem_writeaddr, exmem_targetaddr, idex_nextpc, exmem_nextpc, memwb_wb_signal, memwb_writeaddr, pc_stall, ifid_stall, ifid_flush, idex_flush, exmem_flush, correctpc);
-    input [255:0] Vaild;
+module Hazard (pc, ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signal, idex_wb_signal, exmem_branchcond, exmem_mem_signal, exmem_wb_signal, exmem_writeaddr, exmem_targetaddr, idex_nextpc, exmem_nextpc, memwb_wb_signal, memwb_writeaddr, pc_stall, ifid_stall, ifid_flush, idex_flush, exmem_flush, correctpc);
     input [15:0] pc;
     input [15:0] ifid_instruction;
     input [15:0] idex_instruction;
@@ -83,15 +82,6 @@ module Hazard (Vaild, pc, ifid_instruction, idex_instruction, use_rs, use_rt, id
                 ifid_stall = 1;
                 ifid_flush = 0;
                 idex_flush = 1;
-                exmem_flush = 0;
-                correctpc = 0;
-            end
-            //pc stall until pcsource produce for cold instruction
-            else if(!Vaild[index]) begin
-                pc_stall = 1;
-                ifid_stall = 0;
-                ifid_flush = 0;
-                idex_flush = 0;
                 exmem_flush = 0;
                 correctpc = 0;
             end

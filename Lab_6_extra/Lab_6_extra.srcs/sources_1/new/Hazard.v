@@ -1,4 +1,4 @@
-module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signal, idex_mem_signal, idex_wb_signal, exmem_branchcond, exmem_mem_signal, exmem_wb_signal, exmem_writeaddr, exmem_targetaddr, idex_nextpc, exmem_nextpc, memwb_wb_signal, memwb_writeaddr, pc_stall, ifid_stall, ifid_flush, idex_flush, exmem_flush, correctpc);
+module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signal, idex_mem_signal, idex_wb_signal, exmem_branchcond, exmem_mem_signal, exmem_wb_signal, exmem_writeaddr, exmem_targetaddr, exmem_predictpc, exmem_nextpc, memwb_wb_signal, memwb_writeaddr, pc_stall, ifid_stall, ifid_flush, idex_flush, exmem_flush, correctpc);
     input [15:0] ifid_instruction;
     input [15:0] idex_instruction;
     input use_rs;
@@ -11,7 +11,7 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
     input [5:0] exmem_wb_signal;
     input [1:0] exmem_writeaddr;
     input [15:0] exmem_targetaddr;
-    input [15:0] idex_nextpc;
+    input [15:0] exmem_predictpc;
     input [15:0] exmem_nextpc;
     input [5:0] memwb_wb_signal;
     input [1:0] memwb_writeaddr;
@@ -32,7 +32,7 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
 
     always @(*) begin
         //jump misprediction
-        if(exmem_mem_signal[3:2] != 0 && idex_nextpc-1 != exmem_targetaddr) begin
+        if(exmem_mem_signal[3:2] != 0 && exmem_predictpc != exmem_targetaddr) begin
             pc_stall = 0;
             ifid_stall = 0;
             ifid_flush = 1;
@@ -41,7 +41,7 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
             correctpc = exmem_targetaddr;
         end
         //branch misprediction, branch is not taken or taken but predicted_pc is wrong
-        else if(exmem_mem_signal[4] && exmem_branchcond && idex_nextpc-1 != exmem_targetaddr) begin
+        else if(exmem_mem_signal[4] && exmem_branchcond && exmem_predictpc != exmem_targetaddr) begin
             pc_stall = 0;   
             ifid_stall = 0;
             ifid_flush = 1;
@@ -49,7 +49,7 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
             exmem_flush = 1;
             correctpc = exmem_targetaddr;
         end
-        else if(exmem_mem_signal[4] && !exmem_branchcond && idex_nextpc-1 != exmem_nextpc) begin
+        else if(exmem_mem_signal[4] && !exmem_branchcond && exmem_predictpc != exmem_nextpc) begin
             pc_stall = 0;
             ifid_stall = 0;
             ifid_flush = 1;

@@ -29,7 +29,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
 
     //wire definition
     wire [15:0] nextpc, correctpc;
-    wire [15:0] ifid_instruction, ifid_nextpc;
+    wire [15:0] ifid_instruction, ifid_nextpc, ifid_predictpc;
     wire pc_stall, ifid_stall, ifid_flush, idex_flush, exmem_flush;
 
     wire [1:0] forwardA, forwardB;
@@ -38,7 +38,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
 
     wire [15:0] sign_extend;
 
-    wire [15:0] idex_instruction, idex_nextpc, idex_forwardA, idex_forwardB, idex_signextend;
+    wire [15:0] idex_instruction, idex_nextpc, idex_predictpc, idex_forwardA, idex_forwardB, idex_signextend;
     wire [6:0] idex_ex_signal;
     wire [4:0] idex_mem_signal;
     wire [5:0] idex_wb_signal;
@@ -50,7 +50,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
     wire [1:0] writeaddr;
     wire [15:0] targetaddr;
 
-    wire [15:0] exmem_nextpc, exmem_targetaddr, exmem_aluout, exmem_forwardA, exmem_writedata;
+    wire [15:0] exmem_nextpc, exmem_predictpc, exmem_targetaddr, exmem_aluout, exmem_forwardA, exmem_writedata;
     wire [4:0] exmem_mem_signal;
     wire [5:0] exmem_wb_signal;
     wire [1:0] exmem_writeaddr;
@@ -92,7 +92,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .memwb_wb_signal(memwb_wb_signal),
         .memwb_writeaddr(memwb_writeaddr),
         .exmem_targetaddr(exmem_targetaddr),
-        .idex_nextpc(idex_nextpc),
+        .exmem_predictpc(exmem_predictpc),
         .exmem_nextpc(exmem_nextpc),
         .pc_stall(pc_stall),
         .ifid_stall(ifid_stall),
@@ -136,10 +136,12 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .reset_n(reset_n), 
         .i_data(i_data),
         .nextpc(nextpc),
+        .predicted_pc(predicted_pc),
         .ifid_stall(ifid_stall),
         .ifid_flush(ifid_flush),
         .ifid_instruction(ifid_instruction), 
-        .ifid_nextpc(ifid_nextpc)
+        .ifid_nextpc(ifid_nextpc),
+        .ifid_predictpc(ifid_predictpc)
     );
 
     RF rf(
@@ -170,6 +172,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .reset_n(reset_n),
         .ifid_instruction(ifid_instruction),
         .ifid_nextpc(ifid_nextpc),
+        .ifid_predictpc(ifid_predictpc),
         .idex_flush(idex_flush),
         .ex_signal(ex_signal),
         .mem_signal(mem_signal),
@@ -182,6 +185,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .idex_mem_signal(idex_mem_signal),//{Branch, Memread, Memwrite}
         .idex_wb_signal(idex_wb_signal),//{MemtoReg, Regwrite}
         .idex_nextpc(idex_nextpc),
+        .idex_predictpc(idex_predictpc),
         .idex_forwardA(idex_forwardA),
         .idex_forwardB(idex_forwardB),
         .idex_signextend(idex_signextend)
@@ -213,6 +217,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .idex_mem_signal(idex_mem_signal),
         .idex_wb_signal(idex_wb_signal),
         .idex_nextpc(idex_nextpc),
+        .idex_predictpc(idex_predictpc),
         .targetaddr(targetaddr),
         .branchcond(branchcond),
         .aluout(aluout),
@@ -222,6 +227,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .exmem_mem_signal(exmem_mem_signal),
         .exmem_wb_signal(exmem_wb_signal),
         .exmem_nextpc(exmem_nextpc),
+        .exmem_predictpc(exmem_predictpc),
         .exmem_targetaddr(exmem_targetaddr),
         .exmem_branchcond(exmem_branchcond),
         .exmem_aluout(exmem_aluout),

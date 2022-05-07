@@ -71,6 +71,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .mem_signal(mem_signal),
         .wb_signal(wb_signal),
         .exmem_nextpc(exmem_nextpc),
+        .exmem_branchcond(exmem_branchcond),
         .exmem_targetaddr(exmem_targetaddr),
         .exmem_mem_signal(exmem_mem_signal),
         .predicted_pc(predicted_pc)
@@ -158,7 +159,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
 
     assign forwardA_data = (forwardA == 2'd1) ? aluout :
                            (forwardA == 2'd2) ? writedata : 
-                           (forwardA == 2'd3) ? memwb_writeaddr : regdata1;
+                           (forwardA == 2'd3) ? memwb_writedata : regdata1;
     assign forwardB_data = (forwardB == 2'd1) ? aluout :
                            (forwardB == 2'd2) ? writedata : 
                            (forwardB == 2'd3) ? memwb_writedata : regdata2;

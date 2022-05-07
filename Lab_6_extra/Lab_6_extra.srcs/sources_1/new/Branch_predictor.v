@@ -1,23 +1,25 @@
 `define MEMORY_SIZE 256	//	size of memory is 2^8 words (reduced size)
 `define WORD_SIZE 16	//	instead of 2^16 words to reduce memory
 
-module Branch_predictor(clk, reset_n, pc, mem_signal, wb_signal, exmem_nextpc, exmem_targetaddr, exmem_mem_signal, predicted_pc);
+module Branch_predictor(clk, reset_n, pc, mem_signal, wb_signal, exmem_nextpc, exmem_branchcond, exmem_targetaddr, exmem_mem_signal, predicted_pc);
     input clk;
     input reset_n;
     input [15:0] pc;
     input [4:0] mem_signal;
     input [5:0] wb_signal;
     input [15:0] exmem_nextpc;
+    input exmem_branchcond;
     input [15:0] exmem_targetaddr;
     input [4:0] exmem_mem_signal;
 
     output [15:0] predicted_pc;
 
-    reg [1:0] counter;
+    reg [1:0] counter [`MEMORY_SIZE-1:0];
 
     wire [15:0] exmem_pc;
     wire [7:0] index, exmem_index;//8bit because BTB entry is 256
     wire exmem_branch;
+    wire [1:0] exmem_jump;
     reg [7:0] BTB [`MEMORY_SIZE-1:0];
     reg Vaild [`MEMORY_SIZE-1:0];    
 
@@ -27,7 +29,7 @@ module Branch_predictor(clk, reset_n, pc, mem_signal, wb_signal, exmem_nextpc, e
     assign exmem_jump = exmem_mem_signal[3:2];
     assign exmem_branch = exmem_mem_signal[4];
 
-    assign predicted_pc = (Vaild[index]) ? BTB[index] : pc+1;
+    assign predicted_pc = (Vaild[index] && counter[index] >= 2'd2) ? BTB[index] : pc+1;
 
     integer i;
 
@@ -35,14 +37,26 @@ module Branch_predictor(clk, reset_n, pc, mem_signal, wb_signal, exmem_nextpc, e
     always @(posedge clk or negedge reset_n) begin
         if(!reset_n) begin
             for (i = 0 ; i < `MEMORY_SIZE ; i = i+1) begin
-                Vaild [i] <= 0;
-                BTB [i] <= 0;
+                Vaild[i] <= 0;
+                counter[i] <= 2'b10;
+                BTB[i] <= 0;
             end
         end
         //branch, jump instruction
-        else if(exmem_branch || exmem_jump) begin
+        else if(exmem_jump != 2'd0) begin
             Vaild[exmem_index] <= 1;
             BTB[exmem_index] <= exmem_targetaddr;
+        end
+        else if(exmem_branch) begin
+            Vaild[exmem_index] <= 1;
+            BTB[exmem_index] <= exmem_targetaddr;
+
+            if(exmem_branchcond) begin
+                counter[exmem_index] <= (counter[exmem_index] == 2'b11) ? 2'b11 : counter[exmem_index] + 1;
+            end
+            else if(!exmem_branchcond) begin
+                counter[exmem_index] <= (counter[exmem_index] == 2'b00) ? 2'b00 : counter[exmem_index] - 1;
+            end
         end
     end
 endmodule

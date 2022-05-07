@@ -28,14 +28,17 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
     assign instruction = ifid_instruction;
 
     wire [15:0] nextpc, correctpc;
-    wire [15:0] ifid_instruction, ifid_nextpc;
+    wire [15:0] ifid_instruction, ifid_nextpc, ifid_predictpc;
+    
+    //hazard wire
     wire pc_stall, ifid_stall, ifid_flush, idex_flush, exmem_flush;
 
     wire [15:0] regdata1, regdata2;
 
     wire [15:0] sign_extend;
 
-    wire [15:0] idex_instruction, idex_nextpc, idex_regdata1, idex_regdata2, idex_signextend;
+    //idex reg wire
+    wire [15:0] idex_instruction, idex_nextpc, idex_predictpc, idex_regdata1, idex_regdata2, idex_signextend;
     wire [6:0] idex_ex_signal;
     wire [4:0] idex_mem_signal;
     wire [5:0] idex_wb_signal;
@@ -46,12 +49,14 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
     wire [1:0] writeaddr;
     wire [15:0] targetaddr;
 
-    wire [15:0] exmem_nextpc, exmem_targetaddr, exmem_aluout, exmem_regdata1, exmem_writedata;
+    //exmem reg wire
+    wire [15:0] exmem_nextpc, exmem_predictpc, exmem_targetaddr, exmem_aluout, exmem_regdata1, exmem_writedata;
     wire [4:0] exmem_mem_signal;
     wire [5:0] exmem_wb_signal;
     wire [1:0] exmem_writeaddr;
     wire exmem_branchcond;
 
+    //memwb reg wire
     wire [15:0] memwb_nextpc, memwb_data, memwb_aluout, memwb_regdata1, memwb_writedata;
     wire [5:0] memwb_wb_signal;
     wire [1:0] memwb_writeaddr;
@@ -73,7 +78,6 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         );
 
     Hazard hazard(
-        .pc(pc),
         .ifid_instruction(ifid_instruction),
         .idex_instruction(idex_instruction),
         .use_rs(use_rs),
@@ -87,7 +91,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .memwb_wb_signal(memwb_wb_signal),
         .memwb_writeaddr(memwb_writeaddr),
         .exmem_targetaddr(exmem_targetaddr),
-        .idex_nextpc(idex_nextpc),
+        .exmem_predictpc(exmem_predictpc),
         .exmem_nextpc(exmem_nextpc),
         .pc_stall(pc_stall),
         .ifid_stall(ifid_stall),
@@ -118,10 +122,12 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .reset_n(reset_n), 
         .i_data(i_data),
         .nextpc(nextpc),
+        .predicted_pc(predicted_pc),
         .ifid_stall(ifid_stall),
         .ifid_flush(ifid_flush),
         .ifid_instruction(ifid_instruction), 
-        .ifid_nextpc(ifid_nextpc)
+        .ifid_nextpc(ifid_nextpc),
+        .ifid_predictpc(ifid_predictpc)
     );
 
     RF rf(
@@ -145,6 +151,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .reset_n(reset_n),
         .ifid_instruction(ifid_instruction),
         .ifid_nextpc(ifid_nextpc),
+        .ifid_predictpc(ifid_predictpc),
         .idex_flush(idex_flush),
         .ex_signal(ex_signal),
         .mem_signal(mem_signal),
@@ -157,14 +164,14 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .idex_mem_signal(idex_mem_signal),//{Branch, Memread, Memwrite}
         .idex_wb_signal(idex_wb_signal),//{MemtoReg, Regwrite}
         .idex_nextpc(idex_nextpc),
+        .idex_predictpc(idex_predictpc),
         .idex_regdata1(idex_regdata1),
         .idex_regdata2(idex_regdata2),
         .idex_signextend(idex_signextend)
     );
 
     assign aluinput1 = idex_regdata1;
-    assign aluinput2 = (idex_ex_signal[0] == 1'b0) ? idex_regdata2 :
-                       (idex_ex_signal[0] == 1'b1) ? idex_signextend : idex_regdata2;
+    assign aluinput2 = (idex_ex_signal[0]) ? idex_signextend : idex_regdata2;
 
     ALU alu(
         .OP(idex_ex_signal[4:1]),
@@ -180,7 +187,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
     assign targetaddr = (idex_mem_signal[4]) ? idex_nextpc + idex_signextend ://branch
                         (idex_mem_signal[2]) ? {idex_nextpc[15:12], idex_instruction[11:0]} ://jmp,jal
                         (idex_mem_signal[3]) ? idex_regdata1 : idex_nextpc;//jpr,jrl
-
+    //exmem_reg for mem stage
     EX_MEM ex_mem(
         .clk(clk),
         .reset_n(reset_n),
@@ -188,6 +195,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .idex_mem_signal(idex_mem_signal),
         .idex_wb_signal(idex_wb_signal),
         .idex_nextpc(idex_nextpc),
+        .idex_predictpc(idex_predictpc),
         .targetaddr(targetaddr),
         .branchcond(branchcond),
         .aluout(aluout),
@@ -197,6 +205,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .exmem_mem_signal(exmem_mem_signal),
         .exmem_wb_signal(exmem_wb_signal),
         .exmem_nextpc(exmem_nextpc),
+        .exmem_predictpc(exmem_predictpc),
         .exmem_targetaddr(exmem_targetaddr),
         .exmem_branchcond(exmem_branchcond),
         .exmem_aluout(exmem_aluout),
@@ -209,7 +218,7 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
     assign d_address = exmem_aluout;
     assign d_readM = exmem_mem_signal[1];
     assign d_writeM = exmem_mem_signal[0];
-
+    //memwb reg for wb stage
     MEM_WB mem_wb(
         .clk(clk),
         .reset_n(reset_n),

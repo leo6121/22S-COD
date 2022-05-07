@@ -18,7 +18,8 @@ module Branch_predictor(clk, reset_n, pc, mem_signal, wb_signal, exmem_nextpc, e
     wire [15:0] exmem_pc;
     wire [7:0] index, exmem_index;//8bit because BTB entry is 256
     wire exmem_branch;
-    reg [7:0] BTB [`MEMORY_SIZE-1:0];
+    wire [1:0] exmem_jump;
+    reg [15:0] BTB [`MEMORY_SIZE-1:0];
     reg Vaild [`MEMORY_SIZE-1:0];    
 
     assign exmem_pc = exmem_nextpc-1;
@@ -40,7 +41,7 @@ module Branch_predictor(clk, reset_n, pc, mem_signal, wb_signal, exmem_nextpc, e
             end
         end
         //branch, jump instruction
-        else if(exmem_branch || exmem_jump) begin
+        else if(exmem_branch || exmem_jump != 2'd0) begin
             Vaild[exmem_index] <= 1;
             BTB[exmem_index] <= exmem_targetaddr;
         end

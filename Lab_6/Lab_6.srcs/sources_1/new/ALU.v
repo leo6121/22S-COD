@@ -27,9 +27,6 @@ module ALU (OP, A, B, C, branchcond);
     output reg [15:0] C;
     output reg branchcond;
 
-    wire [15:0] signa;
-
-
     // wire [16:0] add, sub;
 
     // assign add = A + B + Cin;

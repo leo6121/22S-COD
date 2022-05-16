@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="cpu_TB_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="cpu_TB" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="55685080fs"></ZoomStartTime>
+      <ZoomEndTime time="57159081fs"></ZoomEndTime>
+      <Cursor1Time time="56550000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="139"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="32" />
+   <wvobject fp_name="/cpu_TB/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/i_cache/i_data" type="array">
+      <obj_property name="ElementShortName">i_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">i_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/NUUT/d_data" type="array">
+      <obj_property name="ElementShortName">d_data[63:0]</obj_property>
+      <obj_property name="ObjectShortName">d_data[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/NUUT/d_address" type="array">
+      <obj_property name="ElementShortName">d_address[15:0]</obj_property>
+      <obj_property name="ObjectShortName">d_address[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/d_cache/exmem_mem_signal" type="array">
+      <obj_property name="ElementShortName">exmem_mem_signal[4:0]</obj_property>
+      <obj_property name="ObjectShortName">exmem_mem_signal[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/d_readM" type="logic">
+      <obj_property name="ElementShortName">d_readM</obj_property>
+      <obj_property name="ObjectShortName">d_readM</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/d_writeM" type="logic">
+      <obj_property name="ElementShortName">d_writeM</obj_property>
+      <obj_property name="ObjectShortName">d_writeM</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/num_inst" type="array">
+      <obj_property name="ElementShortName">num_inst[15:0]</obj_property>
+      <obj_property name="ObjectShortName">num_inst[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/mem_wb/d_cache_data" type="array">
+      <obj_property name="ElementShortName">d_cache_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">d_cache_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/mem_wb/memwb_data" type="array">
+      <obj_property name="ElementShortName">memwb_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">memwb_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/i_cache/cache_counter" type="array">
+      <obj_property name="ElementShortName">cache_counter[2:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_counter[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/NUUT/d_mem_counter" type="array">
+      <obj_property name="ElementShortName">d_mem_counter[2:0]</obj_property>
+      <obj_property name="ObjectShortName">d_mem_counter[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/if_id/ifid_instruction" type="array">
+      <obj_property name="ElementShortName">ifid_instruction[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ifid_instruction[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/id_ex/idex_instruction" type="array">
+      <obj_property name="ElementShortName">idex_instruction[15:0]</obj_property>
+      <obj_property name="ObjectShortName">idex_instruction[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/pc" type="array">
+      <obj_property name="ElementShortName">pc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pc[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/i_cache/i_readM" type="logic">
+      <obj_property name="ElementShortName">i_readM</obj_property>
+      <obj_property name="ObjectShortName">i_readM</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/hazard/hazard" type="array">
+      <obj_property name="ElementShortName">hazard[3:0]</obj_property>
+      <obj_property name="ObjectShortName">hazard[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/i_cache/i_cache_data" type="array">
+      <obj_property name="ElementShortName">i_cache_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">i_cache_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/i_cache/data_bank" type="array">
+      <obj_property name="ElementShortName">data_bank[3:0][63:0]</obj_property>
+      <obj_property name="ObjectShortName">data_bank[3:0][63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/d_cache/d_data_bank" type="array">
+      <obj_property name="ElementShortName">d_data_bank[3:0][63:0]</obj_property>
+      <obj_property name="ObjectShortName">d_data_bank[3:0][63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/d_cache/d_cache_data" type="array">
+      <obj_property name="ElementShortName">d_cache_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">d_cache_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/mem_wb/memwb_data" type="array">
+      <obj_property name="ElementShortName">memwb_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">memwb_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/d_cache/hit" type="logic">
+      <obj_property name="ElementShortName">hit</obj_property>
+      <obj_property name="ObjectShortName">hit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/d_cache/miss" type="logic">
+      <obj_property name="ElementShortName">miss</obj_property>
+      <obj_property name="ObjectShortName">miss</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/NUUT/memory" type="array">
+      <obj_property name="ElementShortName">memory[0:255][15:0]</obj_property>
+      <obj_property name="ObjectShortName">memory[0:255][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/rf/data" type="array">
+      <obj_property name="ElementShortName">data[3:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">data[3:0][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/ex_mem/exmem_predictpc" type="array">
+      <obj_property name="ElementShortName">exmem_predictpc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">exmem_predictpc[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/ex_mem/exmem_targetaddr" type="array">
+      <obj_property name="ElementShortName">exmem_targetaddr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">exmem_targetaddr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/ex_mem/exmem_branchcond" type="logic">
+      <obj_property name="ElementShortName">exmem_branchcond</obj_property>
+      <obj_property name="ObjectShortName">exmem_branchcond</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/branch_predictor/BTB" type="array">
+      <obj_property name="ElementShortName">BTB[255:0][15:0]</obj_property>
+      <obj_property name="ObjectShortName">BTB[255:0][15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/branch_predictor/Vaild" type="array">
+      <obj_property name="ElementShortName">Vaild[255:0]</obj_property>
+      <obj_property name="ObjectShortName">Vaild[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/UUT/datapath/branch_predictor/predicted_pc" type="array">
+      <obj_property name="ElementShortName">predicted_pc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">predicted_pc[15:0]</obj_property>
+   </wvobject>
+</wave_config>

@@ -1,25 +1,3 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2022/04/26 22:11:31
-// Design Name: 
-// Module Name: IF_ID
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 module IF_ID(clk, reset_n, i_cache_data, nextpc, predicted_pc, ifid_stall, ifid_flush, ifid_instruction, ifid_nextpc, ifid_predictpc, ifid_valid);
     input clk;
     input reset_n;

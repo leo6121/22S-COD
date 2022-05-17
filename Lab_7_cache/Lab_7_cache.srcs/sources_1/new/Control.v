@@ -49,7 +49,7 @@ module Control (clk, reset_n, instruction, ex_signal, mem_signal, wb_signal, use
             `OPCODE_ADI : control_signal = {2'd0, 2'd0, 1'b0, 1'b0, 1'b0, 2'd0, `OP_ADD, 1'b1, 1'b1, 1'b0, 1'b1, 1'b0, 1'b0, 1'b1};
             `OPCODE_ORI : control_signal = {2'd0, 2'd0, 1'b0, 1'b0, 1'b0, 2'd0, `OP_OR, 1'b1, 1'b1, 1'b0, 1'b1, 1'b0, 1'b0, 1'b1};
             `OPCODE_LHI : control_signal = {2'd0, 2'd0, 1'b0, 1'b0, 1'b0, 2'd0, `OP_IDB, 1'b1, 1'b0, 1'b0, 1'b1, 1'b0, 1'b0, 1'b1};
-            `OPCODE_LWD : control_signal = {2'd0, 2'd0, 1'b0, 1'b1, 1'b0, 2'd1, `OP_ADD, 1'b1, 1'b0, 1'b1, 1'b1, 1'b0, 1'b0, 1'b1};
+            `OPCODE_LWD : control_signal = {2'd0, 2'd0, 1'b0, 1'b1, 1'b0, 2'd1, `OP_ADD, 1'b1, 1'b1, 1'b0, 1'b1, 1'b0, 1'b0, 1'b1};
             `OPCODE_SWD : control_signal = {2'd0, 2'd0, 1'b0, 1'b0, 1'b1, 2'd0, `OP_ADD, 1'b1, 1'b1, 1'b1, 1'b0, 1'b0, 1'b0, 1'b1};
             `OPCODE_R :
             case (func)

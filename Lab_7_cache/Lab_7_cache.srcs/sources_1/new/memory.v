@@ -34,15 +34,15 @@ module Memory(clk, reset_n, i_readM, i_writeM, i_address, i_data, d_readM, d_wri
 	reg [63:0] i_outputData;
 	reg [63:0] d_outputData;
 
-	wire [1:0] i_bo, d_bo;
-	
-	assign i_data = (i_readM && i_mem_counter == 3'd0)?i_outputData:64'bz;
-	assign d_data = (d_readM && d_mem_counter == 3'd0)?d_outputData:64'bz;
-
-	assign i_bo = i_address[1:0];
-	assign d_bo = d_address[1:0];
-
+	wire [15:0] i_targetaddr, d_targetaddr;
 	reg [2:0] i_mem_counter, d_mem_counter;//mem_counter, 0 for fetch fin, 1,2,3,4 for mem processing, 7 for reset value
+	
+	assign i_data = (i_readM)?i_outputData:64'bz;
+	assign d_data = (d_readM)?d_outputData:64'bz;
+
+	assign i_targetaddr = {i_address[15:2], 2'b0};
+	assign d_targetaddr = {d_address[15:2], 2'b0};
+
 	
 	//i_mem_counter
 	always @(posedge clk) begin
@@ -271,20 +271,9 @@ module Memory(clk, reset_n, i_readM, i_writeM, i_address, i_data, d_readM, d_wri
 			end
 		else
 			begin
-				if(i_readM && i_mem_counter == 3'd4) begin
-					i_outputData <= (i_bo == 2'd0) ? {memory[i_address], memory[i_address+16'd1], memory[i_address+16'd2], memory[i_address+16'd3]} :
-									(i_bo == 2'd1) ? {memory[i_address+16'd3], memory[i_address], memory[i_address+16'd1], memory[i_address+16'd2]} :
-									(i_bo == 2'd2) ? {memory[i_address+16'd2], memory[i_address+16'd3], memory[i_address], memory[i_address+16'd1]} :
-									{memory[i_address+16'd1], memory[i_address+16'd2], memory[i_address+16'd3], memory[i_address]};
-
-				end
+				if(i_readM && i_mem_counter == 3'd4) i_outputData <= {memory[i_targetaddr], memory[i_targetaddr+1], memory[i_targetaddr+2], memory[i_targetaddr+3]};
 				if(i_writeM)memory[i_address] <= i_data;
-				if(d_readM && d_mem_counter == 3'd4) begin
-					d_outputData <= (d_bo == 2'd0) ? {memory[d_address], memory[d_address+16'd1], memory[d_address+16'd2], memory[d_address+16'd3]} :
-									(d_bo == 2'd1) ? {memory[d_address+16'd3], memory[d_address], memory[d_address+16'd1], memory[d_address+16'd2]} :
-									(d_bo == 2'd2) ? {memory[d_address+16'd2], memory[d_address+16'd3], memory[d_address], memory[d_address+16'd1]} :
-									{memory[d_address+16'd1], memory[d_address+16'd2], memory[d_address+16'd3], memory[d_address]};
-				end
+				if(d_readM && d_mem_counter == 3'd4) d_outputData <= {memory[d_targetaddr], memory[d_targetaddr+1], memory[d_targetaddr+2], memory[d_targetaddr+3]};
 				if(d_writeM && d_mem_counter == 3'd4)memory[d_address] <= d_data[63:48];
 			end
 	end

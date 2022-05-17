@@ -25,7 +25,6 @@ module Datapath (clk, reset_n, i_data, d_data, ex_signal, mem_signal, wb_signal,
     reg [15:0] pc;
     
     assign i_address = pc;
-    assign instruction = ifid_instruction;
 
     //ifid reg wire
     wire [15:0] nextpc, correctpc;
@@ -189,6 +188,8 @@ module Datapath (clk, reset_n, i_data, d_data, ex_signal, mem_signal, wb_signal,
         .ifid_predictpc(ifid_predictpc),
         .ifid_valid(ifid_valid)
     );
+
+    assign instruction = ifid_instruction;
 
     RF rf(
         .clk(clk),

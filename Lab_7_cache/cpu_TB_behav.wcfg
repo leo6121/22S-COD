@@ -11,12 +11,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="55685080fs"></ZoomStartTime>
-      <ZoomEndTime time="57159081fs"></ZoomEndTime>
-      <Cursor1Time time="56550000fs"></Cursor1Time>
+      <ZoomStartTime time="300033333fs"></ZoomStartTime>
+      <ZoomEndTime time="302693334fs"></ZoomEndTime>
+      <Cursor1Time time="302250000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="139"></NameColumnWidth>
+      <NameColumnWidth column_width="134"></NameColumnWidth>
       <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="32" />
@@ -116,13 +116,14 @@
       <obj_property name="ElementShortName">miss</obj_property>
       <obj_property name="ObjectShortName">miss</obj_property>
    </wvobject>
-   <wvobject fp_name="/cpu_TB/NUUT/memory" type="array">
-      <obj_property name="ElementShortName">memory[0:255][15:0]</obj_property>
-      <obj_property name="ObjectShortName">memory[0:255][15:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/cpu_TB/UUT/datapath/rf/data" type="array">
       <obj_property name="ElementShortName">data[3:0][15:0]</obj_property>
       <obj_property name="ObjectShortName">data[3:0][15:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/NUUT/memory" type="array">
+      <obj_property name="ElementShortName">memory[0:255][15:0]</obj_property>
+      <obj_property name="ObjectShortName">memory[0:255][15:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/cpu_TB/UUT/datapath/ex_mem/exmem_predictpc" type="array">
       <obj_property name="ElementShortName">exmem_predictpc[15:0]</obj_property>

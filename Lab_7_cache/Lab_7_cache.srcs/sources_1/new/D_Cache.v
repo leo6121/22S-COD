@@ -95,7 +95,7 @@ module D_Cache(clk, reset_n, d_address, d_data, exmem_mem_signal, d_readM, d_wri
         end
         else if(d_readM || d_writeM) begin
             d_cache_counter <=(d_cache_counter == 3'd7) ? 3'd1 :
-                              (d_cache_counter == 3'd4) ? 3'd0 : d_cache_counter+1;
+                              (d_cache_counter == 3'd3) ? 3'd0 : d_cache_counter+1;
         end
     end
 endmodule

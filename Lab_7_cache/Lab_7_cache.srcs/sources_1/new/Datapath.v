@@ -144,7 +144,7 @@ module Datapath (clk, reset_n, i_data, d_data, ex_signal, mem_signal, wb_signal,
 		end
 		else if(i_readM) begin
 			i_mem_counter <=(i_mem_counter == 3'd7) ? 3'd1 :
-                            (i_mem_counter == 3'd4) ? 3'd0 : i_mem_counter+1;
+                            (i_mem_counter == 3'd3) ? 3'd0 : i_mem_counter+1;
 		end
     end
 
@@ -155,7 +155,7 @@ module Datapath (clk, reset_n, i_data, d_data, ex_signal, mem_signal, wb_signal,
 		end
 		else if(d_readM || d_writeM) begin
 			d_mem_counter <=(d_mem_counter == 3'd7) ? 3'd1 :
-                            (d_mem_counter == 3'd4) ? 3'd0 : d_mem_counter+1;
+                            (d_mem_counter == 3'd3) ? 3'd0 : d_mem_counter+1;
 		end
     end
 

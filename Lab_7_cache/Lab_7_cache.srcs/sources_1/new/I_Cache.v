@@ -76,7 +76,7 @@ module I_Cache(clk, reset_n, pc, i_data, exmem_flush, i_readM, i_cache_data);
         end
         else if(i_readM) begin
             cache_counter <=(cache_counter == 3'd7) ? 3'd1 : 
-                            (cache_counter == 3'd4) ? 3'd0 : cache_counter+1;
+                            (cache_counter == 3'd3) ? 3'd0 : cache_counter+1;
         end
     end
 endmodule

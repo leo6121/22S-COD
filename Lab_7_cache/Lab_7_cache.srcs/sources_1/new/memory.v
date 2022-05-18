@@ -51,7 +51,7 @@ module Memory(clk, reset_n, i_readM, i_writeM, i_address, i_data, d_readM, d_wri
 		end
 		else if(i_readM) begin
 			i_mem_counter <=(i_mem_counter == 3'd7) ? 3'd1 : 
-							(i_mem_counter == 3'd4) ? 3'd0 : i_mem_counter+1;
+							(i_mem_counter == 3'd3) ? 3'd0 : i_mem_counter+1;
 		end
 	end
 
@@ -62,7 +62,7 @@ module Memory(clk, reset_n, i_readM, i_writeM, i_address, i_data, d_readM, d_wri
 		end
 		else if(d_readM || d_writeM) begin
 			d_mem_counter <=(d_mem_counter == 3'd7) ? 3'd1 : 
-							(d_mem_counter == 3'd4) ? 3'd0 : d_mem_counter+1;
+							(d_mem_counter == 3'd3) ? 3'd0 : d_mem_counter+1;
 		end
 	end
 
@@ -271,10 +271,10 @@ module Memory(clk, reset_n, i_readM, i_writeM, i_address, i_data, d_readM, d_wri
 			end
 		else
 			begin
-				if(i_readM && i_mem_counter == 3'd4) i_outputData <= {memory[i_targetaddr], memory[i_targetaddr+1], memory[i_targetaddr+2], memory[i_targetaddr+3]};
+				if(i_readM && i_mem_counter == 3'd3) i_outputData <= {memory[i_targetaddr], memory[i_targetaddr+1], memory[i_targetaddr+2], memory[i_targetaddr+3]};
 				if(i_writeM)memory[i_address] <= i_data;
-				if(d_readM && d_mem_counter == 3'd4) d_outputData <= {memory[d_targetaddr], memory[d_targetaddr+1], memory[d_targetaddr+2], memory[d_targetaddr+3]};
-				if(d_writeM && d_mem_counter == 3'd4)memory[d_address] <= d_data[63:48];
+				if(d_readM && d_mem_counter == 3'd3) d_outputData <= {memory[d_targetaddr], memory[d_targetaddr+1], memory[d_targetaddr+2], memory[d_targetaddr+3]};
+				if(d_writeM && d_mem_counter == 3'd3)memory[d_address] <= d_data[63:48];
 			end
 	end
 endmodule

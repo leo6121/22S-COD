@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="300033333fs"></ZoomStartTime>
-      <ZoomEndTime time="302693334fs"></ZoomEndTime>
-      <Cursor1Time time="302250000fs"></Cursor1Time>
+      <ZoomStartTime time="269910000fs"></ZoomStartTime>
+      <ZoomEndTime time="271878001fs"></ZoomEndTime>
+      <Cursor1Time time="271550000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="134"></NameColumnWidth>
+      <NameColumnWidth column_width="129"></NameColumnWidth>
       <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="32" />
+   <WVObjectSize size="33" />
    <wvobject fp_name="/cpu_TB/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -51,6 +51,10 @@
    <wvobject fp_name="/cpu_TB/num_inst" type="array">
       <obj_property name="ElementShortName">num_inst[15:0]</obj_property>
       <obj_property name="ObjectShortName">num_inst[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/cpu_TB/num_clock" type="array">
+      <obj_property name="ElementShortName">num_clock[15:0]</obj_property>
+      <obj_property name="ObjectShortName">num_clock[15:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/cpu_TB/UUT/datapath/mem_wb/d_cache_data" type="array">
       <obj_property name="ElementShortName">d_cache_data[15:0]</obj_property>
@@ -95,6 +99,7 @@
    <wvobject fp_name="/cpu_TB/UUT/datapath/i_cache/data_bank" type="array">
       <obj_property name="ElementShortName">data_bank[3:0][63:0]</obj_property>
       <obj_property name="ObjectShortName">data_bank[3:0][63:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/cpu_TB/UUT/datapath/d_cache/d_data_bank" type="array">
       <obj_property name="ElementShortName">d_data_bank[3:0][63:0]</obj_property>

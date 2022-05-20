@@ -61,7 +61,7 @@ module I_Cache(clk, reset_n, pc, i_data, exmem_flush, i_readM, i_cache_data);
             end
         end
         else if(miss) begin
-            if(cache_counter == 3'd0 && !exmem_flush) begin
+            if(cache_counter == 3'd0) begin
                 tag_bank[index] <= pc[15:4];
                 cache_valid[index] <= 1;
                 data_bank[index] <= i_data;

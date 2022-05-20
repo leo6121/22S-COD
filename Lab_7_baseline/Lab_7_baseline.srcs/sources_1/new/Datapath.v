@@ -103,6 +103,8 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .d_mem_counter(d_mem_counter),
         .ifid_valid(ifid_valid),
         .idex_valid(idex_valid),
+        .d_readM(d_readM),
+        .d_writeM(d_writeM),
         .pc_stall(pc_stall),
         .ifid_stall(ifid_stall),
         .ifid_flush(ifid_flush),
@@ -160,7 +162,8 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .ifid_flush(ifid_flush),
         .ifid_instruction(ifid_instruction), 
         .ifid_nextpc(ifid_nextpc),
-        .ifid_predictpc(ifid_predictpc)
+        .ifid_predictpc(ifid_predictpc),
+        .ifid_valid(ifid_valid)
     );
 
     RF rf(
@@ -201,7 +204,8 @@ module Datapath (clk, reset_n, i_data, i_readM, d_data, ex_signal, mem_signal, w
         .idex_predictpc(idex_predictpc),
         .idex_regdata1(idex_regdata1),
         .idex_regdata2(idex_regdata2),
-        .idex_signextend(idex_signextend)
+        .idex_signextend(idex_signextend),
+        .idex_valid(idex_valid)
     );
 
     assign aluinput1 = idex_regdata1;

@@ -267,7 +267,7 @@ module Memory(clk, reset_n, i_readM, i_writeM, i_address, i_data, d_readM, d_wri
 				if(i_readM && !i_mem_counter)i_outputData <= memory[i_address];
 				if(i_writeM)memory[i_address] <= i_data;
 				if(d_readM && !d_mem_counter)d_outputData <= memory[d_address];
-				if(d_writeM)memory[d_address] <= d_data;
+				if(d_writeM && !d_mem_counter)memory[d_address] <= d_data;
 			end
 	end
 endmodule

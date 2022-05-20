@@ -1,4 +1,4 @@
-module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signal, idex_wb_signal, exmem_branchcond, exmem_mem_signal, exmem_wb_signal, exmem_writeaddr, exmem_targetaddr, exmem_predictpc, exmem_nextpc, memwb_wb_signal, memwb_writeaddr, i_mem_counter, d_mem_counter, ifid_valid, idex_valid, pc_stall, ifid_stall, ifid_flush, idex_stall, idex_flush, exmem_stall, exmem_flush, memwb_flush, correctpc);
+module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signal, idex_wb_signal, exmem_branchcond, exmem_mem_signal, exmem_wb_signal, exmem_writeaddr, exmem_targetaddr, exmem_predictpc, exmem_nextpc, memwb_wb_signal, memwb_writeaddr, i_mem_counter, d_mem_counter, ifid_valid, idex_valid, d_readM, d_writeM, pc_stall, ifid_stall, ifid_flush, idex_stall, idex_flush, exmem_stall, exmem_flush, memwb_flush, correctpc);
     input [15:0] ifid_instruction;
     input [15:0] idex_instruction;
     input use_rs;
@@ -18,6 +18,8 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
     input d_mem_counter;//1 for d_mem_hazard 1
     input ifid_valid;
     input idex_valid;
+    input d_readM;
+    input d_writeM;
     
     output reg pc_stall;
     output reg ifid_stall;
@@ -37,8 +39,8 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
                             (idex_ex_signal[6:5] == 2'd2) ? 2'd2 : idex_instruction[9:8];
 
     wire i_mem_hazard, d_mem_hazard;
-    assign i_mem_hazard = (i_mem_counter) ? 1 : 0;
-    assign d_mem_hazard = (d_mem_counter) ? 1 : 0;
+    assign i_mem_hazard = (!i_mem_counter) ? 1 : 0;
+    assign d_mem_hazard = (!d_mem_counter && (d_writeM||d_readM)) ? 1 : 0;
 
     wire data_hazard, control_hazard;
     assign data_hazard = (((ifid_rs == idex_writeaddr && use_rs) || (ifid_rt == idex_writeaddr && use_rt)) && idex_wb_signal[3]) ||//id-ex
@@ -199,68 +201,4 @@ module Hazard (ifid_instruction, idex_instruction, use_rs, use_rt, idex_ex_signa
             end
         endcase
     end
-
-    // always @(*) begin
-    //     //jump misprediction
-    //     if(exmem_mem_signal[3:2] != 2'd0 && exmem_predictpc != exmem_targetaddr) begin
-    //         pc_stall = 0;
-    //         ifid_stall = 0;
-    //         ifid_flush = 1;
-    //         idex_flush = 1;
-    //         exmem_flush = 1;
-    //         correctpc = exmem_targetaddr;
-    //     end
-    //     //branch misprediction, branch is not taken or taken but predicted_pc is wrong
-    //     else if(exmem_mem_signal[4] && exmem_branchcond && exmem_predictpc != exmem_targetaddr) begin
-    //         pc_stall = 0;   
-    //         ifid_stall = 0;
-    //         ifid_flush = 1;
-    //         idex_flush = 1;
-    //         exmem_flush = 1;
-    //         correctpc = exmem_targetaddr;
-    //     end
-    //     else if(exmem_mem_signal[4] && !exmem_branchcond && exmem_predictpc != exmem_nextpc) begin
-    //         pc_stall = 0;
-    //         ifid_stall = 0;
-    //         ifid_flush = 1;
-    //         idex_flush = 1;
-    //         exmem_flush = 1;
-    //         correctpc = exmem_nextpc;
-    //     end
-    //     //dependency on rs, rt
-    //     else begin
-    //         if() begin
-    //             pc_stall = 1;
-    //             ifid_stall = 1;
-    //             ifid_flush = 0;
-    //             idex_flush = 1;
-    //             exmem_flush = 0;
-    //             correctpc = 0;
-    //         end
-    //         else if begin
-    //             pc_stall = 1;
-    //             ifid_stall = 1;
-    //             ifid_flush = 0;
-    //             idex_flush = 1;
-    //             exmem_flush = 0;
-    //             correctpc = 0;
-    //         end
-    //         else if begin
-    //             pc_stall = 1;
-    //             ifid_stall = 1;
-    //             ifid_flush = 0;
-    //             idex_flush = 1;
-    //             exmem_flush = 0;
-    //             correctpc = 0;
-    //         end
-    //         else begin
-    //             pc_stall = 0;
-    //             ifid_stall = 0;
-    //             ifid_flush = 0;
-    //             idex_flush = 0;
-    //             exmem_flush = 0;
-    //             correctpc = 0;
-    //         end
-    //     end
-    // end
 endmodule
